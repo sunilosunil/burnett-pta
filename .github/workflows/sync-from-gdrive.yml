@@ -1,7 +1,7 @@
 name: Sync content from Google Drive
 
 on:
-  workflow_dispatch:  # manual trigger from GitHub UI
+  workflow_dispatch:  # manual trigger
 
 jobs:
   sync-drive:
@@ -10,27 +10,27 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
 
       - name: Download files from Google Drive
         run: |
           mkdir -p sync
           cd sync
 
-          # Replace with actual file IDs and filenames
           curl -L -o home.txt        "https://drive.google.com/uc?export=download&id=1JpL-DtZwTtx7S4rdXSXlGJe090K6Uvvi"
           curl -L -o volunteer.txt   "https://drive.google.com/uc?export=download&id=11Sm4v0g_2N7knjczwlXtQsoJ959KHPbP"
           curl -L -o events.csv      "https://drive.google.com/uc?export=download&id=1E_ccXNQyJk8vkOcuReRcxNnBEX7SSofR"
           curl -L -o newsletters.csv "https://drive.google.com/uc?export=download&id=1awgfJgW7H3J-9cQrD7p16C9rrKmaLLxS"
           curl -L -o logo.png        "https://drive.google.com/uc?export=download&id=186lYlRh0UhFGaIcb2GcKm575yz6oswFn"
 
-          # Move downloaded files to root
           mv * ../
           cd ..
 
       - name: Commit and push updates
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          git config user.name "Burnett Sync Bot"
+          git config user.email "bot@burnettpta.org"
           git add home.txt volunteer.txt events.csv newsletters.csv logo.png
           git commit -m "Update content from Google Drive" || echo "No changes to commit"
-          git push
+          git push https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }} HEAD:main
