@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>William Burnett Elementary PTA</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 0; line-height: 1.6; background-color: #f7fafc; }
+    header, footer { background: #003366; color: white; padding: 1em; text-align: center; }
+    nav a { margin: 0 1em; color: white; text-decoration: none; }
+    main { padding: 2em; max-width: 800px; margin: auto; background-color: white; }
+    section { margin-bottom: 2em; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 0.5em; text-align: left; }
+    img.logo { height: 60px; margin-bottom: 0.5em; }
+  </style>
+</head>
+<body>
+  <header>
+    <img class="logo" src="https://drive.google.com/uc?export=view&id=186lYlRh0UhFGaIcb2GcKm575yz6oswFn" alt="Burnett PTA Logo">
+    <h1>William Burnett Elementary PTA</h1>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#events">Events</a>
+      <a href="#volunteer">Volunteer</a>
+      <a href="#newsletters">Newsletters</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home">
+      <h2>Welcome!</h2>
+      <div id="home-content">Loading...</div>
+    </section>
+
+    <section id="events">
+      <h2>Upcoming Events</h2>
+      <table id="events-table"></table>
+    </section>
+
+    <section id="volunteer">
+      <h2>Volunteer Opportunities</h2>
+      <div id="volunteer-content">Loading...</div>
+    </section>
+
+    <section id="newsletters">
+      <h2>Newsletters</h2>
+      <ul id="newsletters-list"></ul>
+    </section>
+
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <p>Email: <a href="mailto:burnettpta@example.com">burnettpta@example.com</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 William Burnett Elementary PTA</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script>
+    const homeTextURL = 'https://drive.google.com/uc?export=download&id=1JpL-DtZwTtx7S4rdXSXlGJe090K6Uvvi';
+    const volunteerTextURL = 'https://drive.google.com/uc?export=download&id=11Sm4v0g_2N7knjczwlXtQsoJ959KHPbP';
+    const eventsCSVURL = 'https://drive.google.com/uc?export=download&id=1E_ccXNQyJk8vkOcuReRcxNnBEX7SSofR';
+    const newslettersCSVURL = 'https://drive.google.com/uc?export=download&id=1awgfJgW7H3J-9cQrD7p16C9rrKmaLLxS';
+
+    function loadText(url, elementId) {
+      fetch(url)
+        .then(res => res.text())
+        .then(data => document.getElementById(elementId).innerText = data)
+        .catch(err => document.getElementById(elementId).innerText = 'Error loading content');
+    }
+
+    function loadCSV(url, callback) {
+      Papa.parse(url, {
+        download: true,
+        header: true,
+        complete: function(results) {
+          callback(results.data);
+        }
+      });
+    }
+
+    function renderEvents(data) {
+      const table = document.getElementById('events-table');
+      const rows = data.map(row => `<tr><td>${row.Date}</td><td>${row.Title}</td><td>${row.Description}</td></tr>`);
+      table.innerHTML = `<tr><th>Date</th><th>Title</th><th>Description</th></tr>` + rows.join('');
+    }
+
+    function renderNewsletters(data) {
+      const list = document.getElementById('newsletters-list');
+      const items = data.map(row => `<li><a href="${row.Link}" target="_blank">${row.Title}</a></li>`);
+      list.innerHTML = items.join('');
+    }
+
+    loadText(homeTextURL, 'home-content');
+    loadText(volunteerTextURL, 'volunteer-content');
+    loadCSV(eventsCSVURL, renderEvents);
+    loadCSV(newslettersCSVURL, renderNewsletters);
+  </script>
+</body>
+</html>
