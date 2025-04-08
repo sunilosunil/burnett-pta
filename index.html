@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>William Burnett Elementary PTA</title>
   <link rel="stylesheet" href="styles.css" />
+  <link href="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
 </head>
 <body>
   <header>
@@ -15,9 +17,9 @@
     <nav>
       <a href="#home">Home</a>
       <a href="#about">About</a>
-      <a href="#events">Events</a>
+      <a href="#membership">Membership</a>
       <a href="#volunteer">Volunteer</a>
-      <a href="#join">Join</a>
+      <a href="#events">Events</a>
       <a href="#fundraising">Fundraising</a>
       <a href="#news">News</a>
       <a href="#contact">Contact</a>
@@ -26,58 +28,60 @@
 
   <main>
     <section id="home">
-      <h2>Welcome</h2>
+      <h2><i data-lucide="megaphone"></i> Welcome</h2>
       <div id="home-content">Loading...</div>
     </section>
 
     <section id="about">
-      <h2>About Us</h2>
+      <h2><i data-lucide="handshake"></i> About the PTA</h2>
       <div id="about-content">Loading...</div>
     </section>
 
-    <section id="events">
-      <h2>Upcoming Events</h2>
-      <table id="events-table"></table>
+    <section id="membership">
+      <h2><i data-lucide="badge-check"></i> Membership</h2>
+      <div id="membership-content">Loading...</div>
     </section>
 
     <section id="volunteer">
-      <h2>Volunteer</h2>
+      <h2><i data-lucide="heart"></i> Volunteer</h2>
       <div id="volunteer-content">Loading...</div>
     </section>
 
-    <section id="join">
-      <h2>Join the PTA</h2>
-      <div id="join-content">Loading...</div>
+    <section id="events">
+      <h2><i data-lucide="calendar"></i> Upcoming Events</h2>
+      <table id="events-table"></table>
     </section>
 
     <section id="fundraising">
-      <h2>Fundraising</h2>
+      <h2><i data-lucide="piggy-bank"></i> Fundraising</h2>
       <div id="fundraising-content">Loading...</div>
     </section>
 
     <section id="news">
-      <h2>Newsletters</h2>
+      <h2><i data-lucide="newspaper"></i> Newsletters</h2>
       <ul id="newsletters-list"></ul>
     </section>
 
     <section id="contact">
-      <h2>Contact Us</h2>
+      <h2><i data-lucide="mail"></i> Contact Us</h2>
       <div id="contact-content">Loading...</div>
     </section>
   </main>
 
   <footer>
     <p>&copy; 2025 William Burnett Elementary PTA</p>
-    <img src="pta.png" alt="PTA Logo" />
+    <img src="burnett_pta.png" alt="PTA Logo" />
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
+    lucide.createIcons();
+
     const contentFiles = {
       "home-content": "home.txt",
       "about-content": "about.txt",
+      "membership-content": "membership.txt",
       "volunteer-content": "volunteer.txt",
-      "join-content": "join.txt",
       "fundraising-content": "fundraising.txt",
       "contact-content": "contact.txt"
     };
@@ -104,7 +108,7 @@
       header: true,
       complete: function(results) {
         const list = document.getElementById("newsletters-list");
-        const items = results.data.map(row => `<li><a href=\"${row.Link}\" target=\"_blank\">${row.Title}</a></li>`);
+        const items = results.data.map(row => `<li><a href="${row.Link}" target="_blank">${row.Title}</a></li>`);
         list.innerHTML = items.join('');
       }
     });
