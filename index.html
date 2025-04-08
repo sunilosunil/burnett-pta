@@ -33,13 +33,34 @@
   </style>
 </head>
 <body>
-  <header class="bg-blue text-center py-4">
+  <header class="bg-blue py-4">
     <div class="container">
-      <img src="burnett.png" alt="School Logo" class="school-logo mb-2">
-      <h1>Burnett Elementary PTA</h1>
-      <img src="burnett_pta.png" alt="PTA Logo" class="pta-logo mt-2">
+      <div class="d-none d-md-flex justify-content-between align-items-center">
+        <!-- Left: School Logo -->
+        <div class="flex-shrink-0">
+          <img src="burnett.png" alt="School Logo" class="school-logo" style="height: 80px;">
+        </div>
+  
+        <!-- Center: Title -->
+        <div class="text-center flex-grow-1">
+          <h1 class="m-0 text-white">Burnett Elementary PTA</h1>
+        </div>
+  
+        <!-- Right: PTA Logo -->
+        <div class="flex-shrink-0">
+          <img src="burnett_pta.png" alt="PTA Logo" class="pta-logo" style="height: 80px;">
+        </div>
+      </div>
+  
+      <!-- Mobile layout -->
+      <div class="d-block d-md-none text-center">
+        <img src="burnett.png" alt="School Logo" class="school-logo mb-2" style="height: 60px;">
+        <h1 class="text-white">Burnett Elementary PTA</h1>
+        <img src="burnett_pta.png" alt="PTA Logo" class="pta-logo mt-2" style="height: 60px;">
+      </div>
     </div>
   </header>
+  
 
   <main class="container">
     <section id="about">
