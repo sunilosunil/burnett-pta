@@ -2,36 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>William Burnett Elementary PTA</title>
-  <style>
-    body { font-family: sans-serif; margin: 0; padding: 0; background-color: #f7fafc; }
-    header, footer { background: #003366; color: white; padding: 1em; text-align: center; }
-    nav a { margin: 0 1em; color: white; text-decoration: none; }
-    main { padding: 2em; max-width: 800px; margin: auto; background-color: white; }
-    section { margin-bottom: 2em; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { border: 1px solid #ddd; padding: 0.5em; text-align: left; }
-    img.logo { height: 60px; margin-bottom: 0.5em; }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <img class="logo" src="logo.png" alt="Burnett PTA Logo">
-    <h1>William Burnett Elementary PTA</h1>
+    <div class="logo-bar">
+      <img src="burnett.png" alt="School Logo" />
+      <h1>William Burnett Elementary PTA</h1>
+    </div>
     <nav>
       <a href="#home">Home</a>
+      <a href="#about">About</a>
       <a href="#events">Events</a>
       <a href="#volunteer">Volunteer</a>
-      <a href="#newsletters">Newsletters</a>
+      <a href="#join">Join</a>
+      <a href="#fundraising">Fundraising</a>
+      <a href="#news">News</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
   <main>
     <section id="home">
-      <h2>Welcome!</h2>
+      <h2>Welcome</h2>
       <div id="home-content">Loading...</div>
+    </section>
+
+    <section id="about">
+      <h2>About Us</h2>
+      <div id="about-content">Loading...</div>
     </section>
 
     <section id="events">
@@ -40,68 +41,73 @@
     </section>
 
     <section id="volunteer">
-      <h2>Volunteer Opportunities</h2>
+      <h2>Volunteer</h2>
       <div id="volunteer-content">Loading...</div>
     </section>
 
-    <section id="newsletters">
+    <section id="join">
+      <h2>Join the PTA</h2>
+      <div id="join-content">Loading...</div>
+    </section>
+
+    <section id="fundraising">
+      <h2>Fundraising</h2>
+      <div id="fundraising-content">Loading...</div>
+    </section>
+
+    <section id="news">
       <h2>Newsletters</h2>
       <ul id="newsletters-list"></ul>
     </section>
 
     <section id="contact">
       <h2>Contact Us</h2>
-      <p>Email: <a href="mailto:burnettpta@example.com">burnettpta@example.com</a></p>
+      <div id="contact-content">Loading...</div>
     </section>
   </main>
 
   <footer>
     <p>&copy; 2025 William Burnett Elementary PTA</p>
+    <img src="burnett_pta.png" alt="PTA Logo" />
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
-    function loadText(file, elementId) {
+    const contentFiles = {
+      "home-content": "home.txt",
+      "about-content": "about.txt",
+      "volunteer-content": "volunteer.txt",
+      "join-content": "join.txt",
+      "fundraising-content": "fundraising.txt",
+      "contact-content": "contact.txt"
+    };
+
+    Object.entries(contentFiles).forEach(([id, file]) => {
       fetch(file)
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById(elementId).innerText = data;
-        })
-        .catch(() => {
-          document.getElementById(elementId).innerText = "Error loading " + file;
-        });
-    }
+        .then(res => res.text())
+        .then(text => document.getElementById(id).innerHTML = marked ? marked.parse(text) : text)
+        .catch(() => document.getElementById(id).innerText = "Could not load " + file);
+    });
 
-    function loadCSV(file, callback) {
-      Papa.parse(file, {
-        download: true,
-        header: true,
-        complete: function(results) {
-          callback(results.data);
-        }
-      });
-    }
+    Papa.parse("events.csv", {
+      download: true,
+      header: true,
+      complete: function(results) {
+        const table = document.getElementById("events-table");
+        const rows = results.data.map(row => `<tr><td>${row.Date}</td><td>${row.Title}</td><td>${row.Description}</td></tr>`);
+        table.innerHTML = `<tr><th>Date</th><th>Title</th><th>Description</th></tr>` + rows.join('');
+      }
+    });
 
-    function renderEvents(data) {
-      const table = document.getElementById('events-table');
-      const rows = data.map(row => 
-        `<tr><td>${row.Date}</td><td>${row.Title}</td><td>${row.Description}</td></tr>`
-      );
-      table.innerHTML = '<tr><th>Date</th><th>Title</th><th>Description</th></tr>' + rows.join('');
-    }
-
-    function renderNewsletters(data) {
-      const list = document.getElementById('newsletters-list');
-      const items = data.map(row => 
-        `<li><a href="${row.Link}" target="_blank">${row.Title}</a></li>`
-      );
-      list.innerHTML = items.join('');
-    }
-
-    loadText("home.txt", "home-content");
-    loadText("volunteer.txt", "volunteer-content");
-    loadCSV("events.csv", renderEvents);
-    loadCSV("newsletters.csv", renderNewsletters);
+    Papa.parse("newsletters.csv", {
+      download: true,
+      header: true,
+      complete: function(results) {
+        const list = document.getElementById("newsletters-list");
+        const items = results.data.map(row => `<li><a href=\"${row.Link}\" target=\"_blank\">${row.Title}</a></li>`);
+        list.innerHTML = items.join('');
+      }
+    });
   </script>
 </body>
 </html>
