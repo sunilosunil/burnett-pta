@@ -1,132 +1,119 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>William Burnett Elementary PTA</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link href="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Burnett Elementary PTA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #fdfdfd;
+      color: #003366;
+    }
+    .bg-blue {
+      background-color: #003366;
+      color: white;
+    }
+    .bg-golden {
+      background-color: #ffd700;
+      color: #003366;
+    }
+    .pta-logo, .school-logo {
+      max-height: 100px;
+    }
+    section {
+      padding: 40px 0;
+    }
+    .placeholder-img {
+      background-color: #ccc;
+      width: 100%;
+      height: 200px;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <div class="logo-bar">
-      <img src="burnett.png" alt="School Logo" />
-      <h1>William Burnett Elementary PTA</h1>
+  <header class="bg-blue text-center py-4">
+    <div class="container">
+      <img src="burnett.png" alt="School Logo" class="school-logo mb-2">
+      <h1>Burnett Elementary PTA</h1>
+      <img src="burnett_pta.png" alt="PTA Logo" class="pta-logo mt-2">
     </div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#membership">Membership</a>
-      <a href="#volunteer">Volunteer</a>
-      <a href="#events">Events</a>
-      <a href="#fundraising">Fundraising</a>
-      <a href="#news">News</a>
-      <a href="#contact">Contact</a>
-    </nav>
   </header>
 
-  <main>
-    <section id="home">
-      <h2><i data-lucide="megaphone"></i> Welcome</h2>
-      <div id="home-content">Loading...</div>
-    </section>
-
+  <main class="container">
     <section id="about">
-      <h2><i data-lucide="handshake"></i> About the PTA</h2>
+      <h2>About the PTA</h2>
       <div id="about-content">Loading...</div>
     </section>
 
-    <section id="membership">
-      <h2><i data-lucide="badge-check"></i> Membership</h2>
-      <div id="membership-content">Loading...</div>
-    </section>
-
-    <section id="volunteer">
-      <h2><i data-lucide="heart-handshake"></i> Volunteer</h2>
-      <div id="volunteer-content">Loading...</div>
+    <section id="programs">
+      <h2>Programs</h2>
+      <div id="programs-content">Loading...</div>
     </section>
 
     <section id="events">
-      <h2><i data-lucide="calendar-days"></i> Upcoming Events</h2>
-      <table id="events-table"></table>
+      <h2>Upcoming Events</h2>
+      <div id="events-content">Loading...</div>
     </section>
 
-    <section id="fundraising">
-      <h2><i data-lucide="donate"></i> Fundraising</h2>
-      <div id="fundraising-content">Loading...</div>
+    <section id="volunteer">
+      <h2>Volunteer</h2>
+      <div id="volunteer-content">Loading...</div>
     </section>
 
-    <section id="news">
-      <h2><i data-lucide="newspaper"></i> Newsletters</h2>
-      <ul id="newsletters-list"></ul>
+    <section id="pta-board">
+      <h2>PTA Board</h2>
+      <div id="pta-board-content">Loading...</div>
     </section>
 
-    <section id="contact">
-      <h2><i data-lucide="mail"></i> Contact Us</h2>
+    <section id="gallery">
+      <h2>Gallery</h2>
+      <div class="row">
+        <div class="col-md-4"><div class="placeholder-img"></div></div>
+        <div class="col-md-4"><div class="placeholder-img"></div></div>
+        <div class="col-md-4"><div class="placeholder-img"></div></div>
+      </div>
+    </section>
+
+    <section id="contact" class="bg-golden text-center">
+      <h2>Contact Us</h2>
       <div id="contact-content">Loading...</div>
     </section>
   </main>
 
-  <footer>
-    <p>&copy; 2025 William Burnett Elementary PTA</p>
-    <img src="burnett_pta.png" alt="PTA Logo" />
-    <div id="version" style="color: #003366; font-size: 0.8em;"></div>
+  <footer class="bg-blue text-white text-center py-3">
+    &copy; <span id="year"></span> Burnett Elementary PTA
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
-    lucide.createIcons();
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-    const contentFiles = {
-      "home-content": "home.txt",
-      "about-content": "about.txt",
-      "membership-content": "membership.txt",
-      "volunteer-content": "volunteer.txt",
-      "fundraising-content": "fundraising.txt",
-      "contact-content": "contact.txt"
-    };
-
-    Object.entries(contentFiles).forEach(([id, file]) => {
-      fetch(file)
+    const sections = ["about", "programs", "events", "volunteer", "pta-board", "contact"];
+    sections.forEach(id => {
+      fetch(`${id}.txt`)
         .then(res => res.text())
-        .then(text => document.getElementById(id).innerHTML = text)
-        .catch(() => document.getElementById(id).innerText = "Could not load " + file);
+        .then(text => document.getElementById(`${id}-content`).innerHTML = text)
+        .catch(err => document.getElementById(`${id}-content`).innerHTML = "<p>Content coming soon.</p>");
     });
 
-    Papa.parse("events.csv", {
-      download: true,
-      header: true,
-      complete: function(results) {
-        const table = document.getElementById("events-table");
-        const rows = results.data.map(row => `<tr><td>${row.Date}</td><td>${row.Title}</td><td>${row.Description}</td></tr>`);
-        table.innerHTML = `<tr><th>Date</th><th>Title</th><th>Description</th></tr>` + rows.join('');
-      }
-    });
-
-    Papa.parse("newsletters.csv", {
-      download: true,
-      header: true,
-      complete: function(results) {
-        const list = document.getElementById("newsletters-list");
-        const items = results.data.map(row => `<li><a href="${row.Link}" target="_blank">${row.Title}</a></li>`);
-        list.innerHTML = items.join('');
-      }
-    });
-
-    // GitHub version info
-    const repoOwner = "sunilosunil";
-    const repoName = "burnett-pta";
-    fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/commits/main`)
-      .then(response => response.json())
-      .then(data => {
-        const shortHash = data.sha.substring(0, 7);
-        const date = new Date(data.commit.committer.date).toISOString().split('T')[0].replace(/-/g, ".");
-        document.getElementById("version").textContent = `v${date}-${shortHash}`;
-      })
-      .catch(() => {
-        document.getElementById("version").textContent = "vUnknown";
+    fetch("pta-board.csv")
+      .then(res => res.text())
+      .then(csv => {
+        const lines = csv.trim().split("\n");
+        const table = document.createElement("table");
+        table.className = "table table-striped";
+        lines.forEach((line, index) => {
+          const row = document.createElement("tr");
+          const cells = line.split(",");
+          cells.forEach(cell => {
+            const cellEl = document.createElement(index === 0 ? "th" : "td");
+            cellEl.textContent = cell.trim();
+            row.appendChild(cellEl);
+          });
+          table.appendChild(row);
+        });
+        document.getElementById("pta-board-content").innerHTML = "";
+        document.getElementById("pta-board-content").appendChild(table);
       });
   </script>
 </body>
