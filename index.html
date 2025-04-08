@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,17 +44,17 @@
     </section>
 
     <section id="volunteer">
-      <h2><i data-lucide="heart"></i> Volunteer</h2>
+      <h2><i data-lucide="heart-handshake"></i> Volunteer</h2>
       <div id="volunteer-content">Loading...</div>
     </section>
 
     <section id="events">
-      <h2><i data-lucide="calendar"></i> Upcoming Events</h2>
+      <h2><i data-lucide="calendar-days"></i> Upcoming Events</h2>
       <table id="events-table"></table>
     </section>
 
     <section id="fundraising">
-      <h2><i data-lucide="piggy-bank"></i> Fundraising</h2>
+      <h2><i data-lucide="donate"></i> Fundraising</h2>
       <div id="fundraising-content">Loading...</div>
     </section>
 
@@ -89,7 +90,7 @@
     Object.entries(contentFiles).forEach(([id, file]) => {
       fetch(file)
         .then(res => res.text())
-        .then(text => document.getElementById(id).innerHTML = marked ? marked.parse(text) : text)
+        .then(text => document.getElementById(id).innerHTML = text)
         .catch(() => document.getElementById(id).innerText = "Could not load " + file);
     });
 

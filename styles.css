@@ -7,7 +7,7 @@ body {
 }
 
 header, footer {
-  background-color: #003366; /* dark blue */
+  background-color: #003366;
   color: white;
   padding: 1em;
   text-align: center;
@@ -22,7 +22,7 @@ header, footer {
 }
 
 .logo-bar img {
-  height: 50px;
+  height: 80px;
   max-width: 100%;
 }
 
@@ -30,15 +30,16 @@ nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.75em;
+  gap: 1em;
   margin-top: 1em;
 }
 
 nav a {
-  color: #FFD700; /* golden yellow */
+  color: #FFD700;
   font-weight: bold;
   text-decoration: none;
   padding: 0.5em 1em;
+  font-size: 1.1em;
 }
 
 nav a:hover {
@@ -65,7 +66,12 @@ section h2 {
   display: flex;
   align-items: center;
   gap: 0.5em;
-  font-size: 1.3em;
+  font-size: 1.5em;
+}
+
+section h2 i {
+  width: 28px;
+  height: 28px;
 }
 
 table {
@@ -90,12 +96,11 @@ ul li {
 }
 
 footer img {
-  height: 40px;
+  height: 60px;
   margin-top: 1em;
   max-width: 100%;
 }
 
-/* Mobile responsiveness */
 @media (max-width: 600px) {
   .logo-bar {
     flex-direction: column;
@@ -111,10 +116,14 @@ footer img {
   }
 
   section h2 {
-    font-size: 1.1em;
+    font-size: 1.2em;
   }
 
   th, td {
     font-size: 0.9em;
+  }
+
+  nav a {
+    font-size: 1em;
   }
 }
