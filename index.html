@@ -87,20 +87,30 @@
   </footer>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    const sections = ["about", "programs", "events", "volunteer", "pta-board", "contact"];
+    const sections = ["about", "programs", "events", "volunteer", "contact"];
+  
+    // Load .txt content
     sections.forEach(id => {
       fetch(`${id}.txt`)
-        .then(res => res.text())
+        .then(res => {
+          if (!res.ok) throw new Error(`Missing file: ${id}.txt`);
+          return res.text();
+        })
         .then(text => document.getElementById(`${id}-content`).innerHTML = text)
         .catch(err => document.getElementById(`${id}-content`).innerHTML = "<p>Content coming soon.</p>");
     });
-
+  
+    // Load CSV and check content type
     fetch("pta-board.csv")
-      .then(res => res.text())
+      .then(res => {
+        const contentType = res.headers.get("Content-Type");
+        if (!res.ok || !contentType.includes("text/csv")) {
+          throw new Error("Not a CSV");
+        }
+        return res.text();
+      })
       .then(csv => {
-        const lines = csv.trim().split("\n");
+        const lines = csv.trim().split("\\n");
         const table = document.createElement("table");
         table.className = "table table-striped";
         lines.forEach((line, index) => {
@@ -113,9 +123,14 @@
           });
           table.appendChild(row);
         });
-        document.getElementById("pta-board-content").innerHTML = "";
-        document.getElementById("pta-board-content").appendChild(table);
+        const boardContent = document.getElementById("pta-board-content");
+        boardContent.innerHTML = "";
+        boardContent.appendChild(table);
+      })
+      .catch(err => {
+        document.getElementById("pta-board-content").innerHTML = "<p>Board info coming soon.</p>";
       });
   </script>
+  
 </body>
 </html>
